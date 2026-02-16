@@ -1,6 +1,6 @@
 {
-  "watch": ["src"],           // only watch the src folder
-  "ext": "js,json",          // restart on .js and .json changes
-  "ignore": ["src/tests/*"], // don't restart when tests change
-  "delay": "500"             // wait 500ms before restarting (avoids rapid restarts)
+  "watch": ["src"],           
+  "ext": "js,json",         
+  "ignore": ["src/tests/*"], 
+  "delay": "500"             
 }
