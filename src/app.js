@@ -6,6 +6,7 @@ import cookieParser from "cookie-parser";
 import config from "./config/index.js";
 import errorHandler from "./middlewares/errorHandler.js";
 import ApiError from "./utils/ApiError.js";
+import routes from "./routes/index.js";
 
 const app = express();
 
@@ -32,7 +33,7 @@ app.get("/health", (_req, res) => {
 });
 
 // API routes (will be added as features are built)
-// app.use("/api/v1", routes);
+app.use("/api/v1", routes);
 
 // 404 handler
 app.use((_req, _res, next) => {
