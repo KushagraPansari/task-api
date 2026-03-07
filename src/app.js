@@ -32,7 +32,6 @@ app.get("/health", (_req, res) => {
   res.status(200).json({ status: "ok", timestamp: new Date().toISOString() });
 });
 
-// API routes (will be added as features are built)
 app.use("/api/v1", routes);
 
 // 404 handler
