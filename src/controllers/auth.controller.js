@@ -50,3 +50,15 @@ export const refreshToken = asyncHandler(async (req, res) => {
     .cookie("refreshToken", newRefreshToken, cookieOptions)
     .json(ApiResponse.ok({ accessToken }, "Token refreshed"));
 });
+
+
+export const getCurrentUser = asyncHandler(async(req, res)=>{
+  res.status(200).json(ApiResponse.ok(req.user, "User fetched successfully"));
+})
+
+
+export const changePassword = asyncHandler(async (req, res) => {
+  const { currentPassword, newPassword } = req.body;
+  await authService.changePassword(req.user._id, currentPassword, newPassword);
+  res.status(200).json(ApiResponse.ok(null, "Password changed successfully"));
+});

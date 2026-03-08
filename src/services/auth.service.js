@@ -69,3 +69,16 @@ export const refreshAccessToken = async (incomingRefreshToken) => {
 
   return { accessToken, refreshToken };
 };
+
+
+
+export const changePassword = async (userId, currentPassword, newPassword) => {
+  const user = await User.findById(userId).select("+password");
+  if (!user) throw ApiError.notFound("User not found");
+
+  const isPasswordValid = await user.isPasswordCorrect(currentPassword);
+  if (!isPasswordValid) throw ApiError.unauthorized("Current password is incorrect");
+
+  user.password = newPassword;
+  await user.save();
+};
