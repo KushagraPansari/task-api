@@ -2,6 +2,7 @@ import jwt from "jsonwebtoken";
 import User from "../models/user.model.js";
 import ApiError from "../utils/ApiError.js";
 import config from "../config/index.js";
+import uploadToCloudinary, { deleteFromCloudinary } from "../utils/cloudinaryUpload.js";
 
 const generateTokens = async (userId) => {
   const user = await User.findById(userId);
@@ -71,7 +72,6 @@ export const refreshAccessToken = async (incomingRefreshToken) => {
 };
 
 
-
 export const changePassword = async (userId, currentPassword, newPassword) => {
   const user = await User.findById(userId).select("+password");
   if (!user) throw ApiError.notFound("User not found");
@@ -81,4 +81,23 @@ export const changePassword = async (userId, currentPassword, newPassword) => {
 
   user.password = newPassword;
   await user.save();
+};
+
+
+export const updateAvatar = async (userId, fileBuffer) => {
+  const user = await User.findById(userId);
+  if (!user) throw ApiError.notFound("User not found");
+
+  if (user.avatar?.publicId) {
+    await deleteFromCloudinary(user.avatar.publicId);
+  }
+  const result = await uploadToCloudinary(fileBuffer, "task-api/avatars");
+
+  user.avatar = {
+    url: result.secure_url,
+    publicId: result.public_id,
+  };
+  await user.save({ validateBeforeSave: false });
+
+  return user;
 };

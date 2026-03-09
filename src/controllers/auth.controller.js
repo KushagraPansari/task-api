@@ -62,3 +62,11 @@ export const changePassword = asyncHandler(async (req, res) => {
   await authService.changePassword(req.user._id, currentPassword, newPassword);
   res.status(200).json(ApiResponse.ok(null, "Password changed successfully"));
 });
+
+
+export const updateAvatar = asyncHandler(async (req, res) => {
+  if (!req.file) throw ApiError.badRequest("Please upload an image");
+
+  const user = await authService.updateAvatar(req.user._id, req.file.buffer);
+  res.status(200).json(ApiResponse.ok(user, "Avatar updated successfully"));
+});

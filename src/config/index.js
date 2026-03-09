@@ -16,10 +16,15 @@ const config = Object.freeze({
   cors: {
     origin: process.env.CORS_ORIGIN?.split(",") || ["http://localhost:5173"],
   },
+  cloudinary: {
+    cloudName: process.env.CLOUDINARY_CLOUD_NAME,
+    apiKey: process.env.CLOUDINARY_API_KEY,
+    apiSecret: process.env.CLOUDINARY_API_SECRET,
+  },
 });
 
 // Validate critical config at startup
-const requiredVars = ["db.uri", "jwt.accessSecret", "jwt.refreshSecret"];
+const requiredVars = ["db.uri", "jwt.accessSecret", "jwt.refreshSecret", "cloudinary.cloudName", "cloudinary.apiKey","cloudinary.apiSecret",];
 for (const key of requiredVars) {
   const value = key.split(".").reduce((obj, k) => obj?.[k], config);
   if (!value) {
