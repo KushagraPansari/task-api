@@ -5,6 +5,7 @@ import compression from "compression";
 import cookieParser from "cookie-parser";
 import config from "./config/index.js";
 import errorHandler from "./middlewares/errorHandler.js";
+import { generalLimiter } from "./middlewares/rateLimiter.js";
 import ApiError from "./utils/ApiError.js";
 import routes from "./routes/index.js";
 
@@ -18,6 +19,8 @@ app.use(
     credentials: true,
   }),
 );
+
+app.use(generalLimiter);
 
 // Parsing
 app.use(express.json({ limit: "16kb" }));

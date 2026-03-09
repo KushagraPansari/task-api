@@ -3,12 +3,13 @@ import { register, login, logout, refreshToken, getCurrentUser, changePassword, 
 import validate from "../middlewares/validate.js";
 import auth from "../middlewares/auth.js";
 import upload from "../middlewares/upload.js";
+import { authLimiter } from "../middlewares/rateLimiter.js";
 import { registerSchema, loginSchema, changePasswordSchema } from "../validators/auth.validator.js";
 
 const router = Router();
 
-router.post("/register", validate(registerSchema), register);
-router.post("/login", validate(loginSchema), login);
+router.post("/register", authLimiter, validate(registerSchema), register);
+router.post("/login", authLimiter, validate(loginSchema), login);
 router.post("/logout", auth, logout);
 router.post("/refresh-token", refreshToken);
 router.get("/me", auth, getCurrentUser);
