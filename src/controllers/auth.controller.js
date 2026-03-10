@@ -70,3 +70,9 @@ export const updateAvatar = asyncHandler(async (req, res) => {
   const user = await authService.updateAvatar(req.user._id, req.file.buffer);
   res.status(200).json(ApiResponse.ok(user, "Avatar updated successfully"));
 });
+
+
+export const getAllUsers = asyncHandler(async (req, res) => {
+  const users = await authService.getAllUsers();
+  res.status(200).json(ApiResponse.ok(users, "Users fetched successfully"));
+});

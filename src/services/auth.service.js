@@ -101,3 +101,9 @@ export const updateAvatar = async (userId, fileBuffer) => {
 
   return user;
 };
+
+
+export const getAllUsers = async () => {
+  const users = await User.find().select("-__v");
+  return users;
+};
