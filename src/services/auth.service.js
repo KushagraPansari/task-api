@@ -1,5 +1,6 @@
 import jwt from "jsonwebtoken";
 import User from "../models/user.model.js";
+import Task from "../models/task.model.js";
 import ApiError from "../utils/ApiError.js";
 import config from "../config/index.js";
 import uploadToCloudinary, { deleteFromCloudinary } from "../utils/cloudinaryUpload.js";
@@ -106,4 +107,21 @@ export const updateAvatar = async (userId, fileBuffer) => {
 export const getAllUsers = async () => {
   const users = await User.find().select("-__v");
   return users;
+};
+
+
+export const deleteAccount = async (userId, password) => {
+  const user = await User.findById(userId).select("+password");
+  if (!user) throw ApiError.notFound("User not found");
+
+  const isPasswordValid = await user.isPasswordCorrect(password);
+  if (!isPasswordValid) throw ApiError.unauthorized("Incorrect password");
+
+  if (user.avatar?.publicId) {
+    await deleteFromCloudinary(user.avatar.publicId);
+  }
+
+  await Task.deleteMany({ user: userId });
+
+  await user.deleteOne();
 };

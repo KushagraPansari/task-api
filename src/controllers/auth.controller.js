@@ -76,3 +76,11 @@ export const getAllUsers = asyncHandler(async (req, res) => {
   const users = await authService.getAllUsers();
   res.status(200).json(ApiResponse.ok(users, "Users fetched successfully"));
 });
+
+export const deleteAccount = asyncHandler(async (req, res) => {
+  await authService.deleteAccount(req.user._id, req.body.password);
+  res
+    .status(200)
+    .clearCookie("refreshToken", cookieOptions)
+    .json(ApiResponse.ok(null, "Account deleted successfully"));
+});

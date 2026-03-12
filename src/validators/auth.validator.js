@@ -31,3 +31,9 @@ export const changePasswordSchema = z.object({
     .string({ required_error: "New password is required" })
     .min(8, "New password must be at least 8 characters"),
 });
+
+export const deleteAccountSchema = z.object({
+  password: z
+    .string({ required_error: "Password is required" })
+    .min(1, "Password is required"),
+});
