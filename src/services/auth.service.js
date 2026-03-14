@@ -3,7 +3,7 @@ import User from "../models/user.model.js";
 import Task from "../models/task.model.js";
 import ApiError from "../utils/ApiError.js";
 import config from "../config/index.js";
-import uploadToCloudinary, { deleteFromCloudinary } from "../utils/cloudinaryUpload.js";
+import {uploadToCloudinary, deleteFromCloudinary } from "../utils/cloudinaryUpload.js";
 
 const generateTokens = async (userId) => {
   const user = await User.findById(userId);
@@ -124,4 +124,22 @@ export const deleteAccount = async (userId, password) => {
   await Task.deleteMany({ user: userId });
 
   await user.deleteOne();
+};
+
+
+export const updateProfile = async (userId, updateData) => {
+  if (updateData.email) {
+    const existingUser = await User.findOne({ email: updateData.email });
+    if (existingUser && existingUser._id.toString() !== userId.toString()) {
+      throw ApiError.conflict("Email already exists");
+    }
+  }
+
+  const user = await User.findById(userId);
+  if (!user) throw ApiError.notFound("User not found");
+
+  Object.assign(user, updateData);
+  await user.save();
+
+  return user;
 };

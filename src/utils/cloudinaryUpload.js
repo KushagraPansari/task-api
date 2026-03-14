@@ -1,6 +1,6 @@
 import cloudinary from "../config/cloudinary.js";
 
-const   uploadToCloudinary = (fileBuffer, folder = "task-api") => {
+export const uploadToCloudinary = (fileBuffer, folder = "task-api") => {
   return new Promise((resolve, reject) => {
     const stream = cloudinary.uploader.upload_stream(
       {
@@ -25,5 +25,3 @@ export const deleteFromCloudinary = async (publicId) => {
   if (!publicId) return;
   await cloudinary.uploader.destroy(publicId);
 };
-
-export default uploadToCloudinary;

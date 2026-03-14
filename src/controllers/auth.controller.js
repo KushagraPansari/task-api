@@ -84,3 +84,8 @@ export const deleteAccount = asyncHandler(async (req, res) => {
     .clearCookie("refreshToken", cookieOptions)
     .json(ApiResponse.ok(null, "Account deleted successfully"));
 });
+
+export const updateProfile = asyncHandler(async (req, res) => {
+  const user = await authService.updateProfile(req.user._id, req.body);
+  res.status(200).json(ApiResponse.ok(user, "Profile updated successfully"));
+});
