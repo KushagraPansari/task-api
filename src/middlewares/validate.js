@@ -1,4 +1,3 @@
-//validate(registerSchema) is called immediately when the server starts, not when a request comes in.
 import ApiError from "../utils/ApiError.js";
 
 const validate = (schema) => (req, _res, next) => {
@@ -12,7 +11,7 @@ const validate = (schema) => (req, _res, next) => {
     return next(ApiError.badRequest("Validation failed", errors));
   }
 
-  req.body = result.data; //The original dirty request body:Gets replaced with the cleaned data:
+  req.body = result.data;
   next();
 };
 

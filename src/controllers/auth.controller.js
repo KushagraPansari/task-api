@@ -11,13 +11,12 @@ const cookieOptions = {
 };
 
 export const register = asyncHandler(async (req, res) => {
-    //why do they get token back from register? -> Because we want to log them in immediately after they register, so they can start using the app without having to log in again. It's a better user experience. We create the tokens in the service layer, and then send them back to the client in the response. The client can then store the access token in memory (e.g. Redux store) and the refresh token in an HTTP-only cookie for security.
   const { user, accessToken, refreshToken } = await authService.registerUser(req.body);
 
   res
     .status(201)
     .cookie("refreshToken", refreshToken, cookieOptions)
-    .json(ApiResponse.created({ user, accessToken }, "Registration successful")); //api response just creates a object it doesnt send the response, we still need to use res.json to send the response. ApiResponse is just a helper class to create a consistent response format.
+    .json(ApiResponse.created({ user, accessToken }, "Registration successful"));
 });
 
 

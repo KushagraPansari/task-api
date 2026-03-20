@@ -62,7 +62,7 @@ userSchema.methods.isPasswordCorrect = async function (candidatePassword) {
 
 userSchema.methods.generateAccessToken = function () {
   return jwt.sign(
-    { _id: this._id, email: this.email, role: this.role }, //Access token = used on every API request → must carry useful data
+    { _id: this._id, email: this.email, role: this.role },
     config.jwt.accessSecret,
     { expiresIn: config.jwt.accessExpiry },
   );
@@ -70,7 +70,7 @@ userSchema.methods.generateAccessToken = function () {
 
 userSchema.methods.generateRefreshToken = function () {
   return jwt.sign(
-    { _id: this._id }, //Refresh token = used only to get a new access token → only needs identity
+    { _id: this._id },
     config.jwt.refreshSecret,
     { expiresIn: config.jwt.refreshExpiry },
   );

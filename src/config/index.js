@@ -23,7 +23,6 @@ const config = Object.freeze({
   },
 });
 
-// Validate critical config at startup
 const requiredVars = ["db.uri", "jwt.accessSecret", "jwt.refreshSecret", "cloudinary.cloudName", "cloudinary.apiKey","cloudinary.apiSecret",];
 for (const key of requiredVars) {
   const value = key.split(".").reduce((obj, k) => obj?.[k], config);

@@ -21,20 +21,15 @@ export const getTasks = async (userId, userRole, query) => {
 
   const filter = {};
  
-  // Regular users see only their tasks, admin sees all
   if (userRole !== "admin") {
     filter.user = userId;
   }
-
-  // Optional filters
   if (status) filter.status = status;
   if (priority) filter.priority = priority;
 
-  // Search by title
   if (search) {
     filter.title = { $regex: search, $options: "i" };
   }
-
   const pageNum = Math.max(1, parseInt(page, 10));
   const limitNum = Math.min(parseInt(limit, 10), PAGINATION.MAX_LIMIT);
   const skip = (pageNum - 1) * limitNum;
@@ -68,7 +63,7 @@ export const getTaskById = async (taskId, userId, userRole) => {
   if (userRole !== "admin" && task.user._id.toString() !== userId.toString()) {
     throw ApiError.forbidden("You can only access your own tasks");
   }
-
+  
   return task;
 };
 
